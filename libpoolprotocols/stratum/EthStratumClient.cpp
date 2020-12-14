@@ -938,7 +938,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject)
 
                     // Request initial work
                     jReq["id"] = unsigned(5);
-                    jReq["method"] = "eth_getWork";
+                    jReq["method"] = "gen_getWork";
                     jReq["params"] = Json::Value(Json::arrayValue);
                 }
                 else
