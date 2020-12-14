@@ -614,7 +614,7 @@ void EthStratumClient::connect_handler(const boost::system::error_code& ec)
 
     case EthStratumClient::ETHPROXY:
 
-        jReq["method"] = "eth_submitLogin";
+        jReq["method"] = "gen_submitLogin";
         if (!m_conn->Workername().empty())
             jReq["worker"] = m_conn->Workername();
         jReq["params"].append(m_conn->User() + m_conn->Path());
@@ -820,7 +820,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject)
             Process response for each stratum flavour :
             ETHEREUMSTRATUM2 response to mining.hello
             ETHEREUMSTRATUM  response to mining.subscribe
-            ETHPROXY         response to eth_submitLogin
+            ETHPROXY         response to gen_submitLogin
             STRATUM          response to mining.subscribe
             */
 
@@ -1564,7 +1564,7 @@ void EthStratumClient::submitHashrate(uint64_t const& rate, string const& id)
         jReq["jsonrpc"] = "2.0";
         if (!m_conn->Workername().empty())
             jReq["worker"] = m_conn->Workername();
-        jReq["method"] = "eth_submitHashrate";
+        jReq["method"] = "gen_submitHashrate";
         jReq["params"].append(toHex(rate, HexPrefix::Add, 32));  // Already expressed as hex
         jReq["params"].append(id);                               // Already prefixed by 0x
     }
@@ -1622,7 +1622,7 @@ void EthStratumClient::submitSolution(const Solution& solution)
 
     case EthStratumClient::ETHPROXY:
 
-        jReq["method"] = "eth_submitWork";
+        jReq["method"] = "gen_submitWork";
         jReq["params"].append(toHex(solution.nonce, HexPrefix::Add));
         jReq["params"].append(solution.work.header.hex(HexPrefix::Add));
         jReq["params"].append(solution.mixHash.hex(HexPrefix::Add));
