@@ -25,7 +25,7 @@ EthGetworkClient::EthGetworkClient(int worktimeout, unsigned farmRecheckPeriod)
     Json::Value jGetWork;
     jGetWork["id"] = unsigned(1);
     jGetWork["jsonrpc"] = "2.0";
-    jGetWork["method"] = "gen_getWork";
+    jGetWork["method"] = "mib_getWork";
     jGetWork["params"] = Json::Value(Json::arrayValue);
     m_jsonGetWork = std::string(Json::writeString(m_jSwBuilder, jGetWork));
 }
@@ -414,7 +414,7 @@ void EthGetworkClient::processResponse(Json::Value& JRes)
         {
             if (!JRes.isMember("result"))
             {
-                cwarn << "Missing data for gen_getWork request from " << m_conn->Host() << ":"
+                cwarn << "Missing data for mib_getWork request from " << m_conn->Host() << ":"
                       << toString(m_conn->Port());
             }
             else
@@ -529,7 +529,7 @@ void EthGetworkClient::submitHashrate(uint64_t const& rate, string const& id)
         Json::Value jReq;
         jReq["id"] = unsigned(9);
         jReq["jsonrpc"] = "2.0";
-        jReq["method"] = "gen_submitHashrate";
+        jReq["method"] = "mib_submitHashrate";
         jReq["params"] = Json::Value(Json::arrayValue);
         jReq["params"].append(toHex(rate, HexPrefix::Add));  // Already expressed as hex
         jReq["params"].append(id);                           // Already prefixed by 0x
@@ -550,7 +550,7 @@ void EthGetworkClient::submitSolution(const Solution& solution)
         jReq["id"] = id;
         jReq["jsonrpc"] = "2.0";
         m_solution_submitted_max_id = max(m_solution_submitted_max_id, id);
-        jReq["method"] = "gen_submitWork";
+        jReq["method"] = "mib_submitWork";
         jReq["params"] = Json::Value(Json::arrayValue);
         jReq["params"].append("0x" + nonceHex);
         jReq["params"].append("0x" + solution.work.header.hex());
