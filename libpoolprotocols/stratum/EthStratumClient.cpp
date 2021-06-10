@@ -614,7 +614,7 @@ void EthStratumClient::connect_handler(const boost::system::error_code& ec)
 
     case EthStratumClient::ETHPROXY:
 
-        jReq["method"] = "gen_submitLogin";
+        jReq["method"] = "mib_submitLogin";
         if (!m_conn->Workername().empty())
             jReq["worker"] = m_conn->Workername();
         jReq["params"].append(m_conn->User() + m_conn->Path());
@@ -820,7 +820,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject)
             Process response for each stratum flavour :
             ETHEREUMSTRATUM2 response to mining.hello
             ETHEREUMSTRATUM  response to mining.subscribe
-            ETHPROXY         response to gen_submitLogin
+            ETHPROXY         response to mib_submitLogin
             STRATUM          response to mining.subscribe
             */
 
@@ -938,7 +938,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject)
 
                     // Request initial work
                     jReq["id"] = unsigned(5);
-                    jReq["method"] = "gen_getWork";
+                    jReq["method"] = "mib_getWork";
                     jReq["params"] = Json::Value(Json::arrayValue);
                 }
                 else
@@ -1564,7 +1564,7 @@ void EthStratumClient::submitHashrate(uint64_t const& rate, string const& id)
         jReq["jsonrpc"] = "2.0";
         if (!m_conn->Workername().empty())
             jReq["worker"] = m_conn->Workername();
-        jReq["method"] = "gen_submitHashrate";
+        jReq["method"] = "mib_submitHashrate";
         jReq["params"].append(toHex(rate, HexPrefix::Add, 32));  // Already expressed as hex
         jReq["params"].append(id);                               // Already prefixed by 0x
     }
@@ -1622,7 +1622,7 @@ void EthStratumClient::submitSolution(const Solution& solution)
 
     case EthStratumClient::ETHPROXY:
 
-        jReq["method"] = "gen_submitWork";
+        jReq["method"] = "mib_submitWork";
         jReq["params"].append(toHex(solution.nonce, HexPrefix::Add));
         jReq["params"].append(solution.work.header.hex(HexPrefix::Add));
         jReq["params"].append(solution.mixHash.hex(HexPrefix::Add));
